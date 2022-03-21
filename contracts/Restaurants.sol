@@ -27,30 +27,30 @@ contract Restaurants{
         require(bytes(rest.name).length > 0, "Restaurant does not exist!");
     }
 
-    function create(string memory _name, Address memory _addr, uint256 _contact_number)  public nameIsMandatory(_name) {
+    function create(string memory _name, Address memory _addr, uint256 _contact_number)  internal nameIsMandatory(_name) {
         Address memory newAddress = Address(_addr.line_1, _addr.city, _addr.state, _addr.zip);
         Restaurant memory newRestaurant = Restaurant(_name, newAddress, _contact_number, ActiveStatus.Active);
         restaurantMap[restaurantCount++] = newRestaurant;
     }
 
-    function markInactive(uint256 _id) public {
+    function markInactive(uint256 _id) internal {
         Restaurant storage updatedRestaurant = restaurantMap[_id];
         checkRestaurantExistence(updatedRestaurant);
         updatedRestaurant.status = ActiveStatus.InActive;
     }
 
-    function markActive(uint256 _id) public {
+    function markActive(uint256 _id) internal {
         Restaurant storage updatedRestaurant = restaurantMap[_id];
         checkRestaurantExistence(updatedRestaurant);
         updatedRestaurant.status = ActiveStatus.Active;
     }
 
-    function getRestaurant(uint256 _id) public view returns(Restaurant memory){
+    function getRestaurant(uint256 _id) internal view returns(Restaurant memory){
         Restaurant memory res = restaurantMap[_id];
         return res;
     }
 
-    function updateRestaurant (uint256 _id, string memory _name, Address memory _addr, uint256 _contact_number) public {
+    function updateRestaurant (uint256 _id, string memory _name, Address memory _addr, uint256 _contact_number) internal {
         Restaurant storage updatedRestaurant = restaurantMap[_id];
         checkRestaurantExistence(updatedRestaurant);
         if(bytes(_name).length > 0){

@@ -20,13 +20,15 @@ contract Users{
         _;
     }
 
-    function createUser(string memory _first_name, string memory _last_name, string memory _email, uint256 _restaurant_id) firstNameIsMandatory(_first_name) public {
+    function createUser(string memory _first_name, string memory _last_name, string memory _email, uint256 _restaurant_id) firstNameIsMandatory(_first_name) internal returns(uint256){
         User memory user = User(_first_name, _last_name, _email, ActiveStatus.Active);
-        userToRestaurantMapping[userCount] = _restaurant_id;
+        uint256 userId = userCount;
+        userToRestaurantMapping[userId] = _restaurant_id;
         userMapping[userCount++] = user; 
+        return userId;
     }
 
-    function getUser(uint256 _id) public view returns(User memory,uint256){
+    function getUser(uint256 _id) internal view returns(User memory,uint256){
         User memory user = userMapping[_id];
         return(user, userToRestaurantMapping[_id]);
     }

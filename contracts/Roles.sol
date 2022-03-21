@@ -11,15 +11,15 @@ contract Roles{
         ActiveStatus status;
     }
     mapping(uint256 => Role) public roleMapping;
-    mapping(string => uint256) public roleNameToKeyMapping;
+    mapping(string => uint256) roleNameToKeyMapping;
 
-    constructor (){
-        Role memory role = Role("Admin", ActiveStatus.Active);
+    function getRoleIdByRoleName(string memory _role_name) internal view returns(uint256){
+        return roleNameToKeyMapping[_role_name];
+    }
+
+    function createRole(string memory _role_name) internal {
+        Role memory role = Role(_role_name, ActiveStatus.Active);
         roleNameToKeyMapping[role.name] = roleCount;
         roleMapping[roleCount++] = role;
-
-        Role memory role2 = Role("Restaurant Admin", ActiveStatus.Active);
-        roleNameToKeyMapping[role2.name] = roleCount;
-        roleMapping[roleCount++] = role2;
     }
 }
